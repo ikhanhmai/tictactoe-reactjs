@@ -12,7 +12,7 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
           squares: Array(9).fill(null),
         }],
         stepNumber: 0,
-          xIsNext: true
+        xIsNext: true
       }
   }
   handleClick(i) {
@@ -69,12 +69,13 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
   }
   function getMoves(history,game){
     return history.map((step, move) => {
-      console.log(step);
       const desc = move ?
         'Go to move #' + move +": "+convertIndexToCoordinate(move):
         'Go to game start';
+      let selected = "unselected";
+      if (game.state.stepNumber === move) selected = "selected";
       return (
-        <Step move={move} onClick={() => jumpTo(move,game)} desc={desc}/>
+        <Step move={move} onClick={() => {jumpTo(move,game);} } selected={selected} desc={desc}/>
       );
     });
   }
