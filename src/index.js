@@ -20,7 +20,7 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
     const history = this.state.history;
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares).winner || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -36,7 +36,12 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
     render() {
       const history = this.state.history;
       const current = history[this.state.stepNumber]; 
-      const winner = calculateWinner(current.squares);
+      const winnerResult = calculateWinner(current.squares);
+      let winner, winnerLine;
+      if(winnerResult !== null){
+        winner = winnerResult.winner;
+        winnerLine = winnerResult.line;
+      }
       const moves = getMoves(history,this);
       let status;
       if (winner) {
@@ -47,6 +52,7 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
       return (
         <div className="game">
               <Board
+                winnerLine = {winnerLine}
                 squares={current.squares}
                 onClick={(i) => this.handleClick(i)}
               />

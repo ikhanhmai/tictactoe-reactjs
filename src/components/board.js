@@ -4,8 +4,12 @@ import {NUMBER_OF_COL, NUMBER_OF_ROW} from '../constants';
 class Board extends React.Component {
     
     renderSquare(i) {
+      let isHighlighted = false;
+      if(this.props.winnerLine && this.props.winnerLine.indexOf(i) >= 0)
+        isHighlighted = true;
       return (
         <Square
+          isHighlighted = {isHighlighted}
           key = {i}
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
