@@ -1,6 +1,8 @@
 import React from 'react';
 import Square from './square.js';
+import {NUMBER_OF_COL, NUMBER_OF_ROW} from '../constants';
 class Board extends React.Component {
+    
     renderSquare(i) {
       return (
         <Square
@@ -11,23 +13,18 @@ class Board extends React.Component {
     }
 
   render() {
+    let boardArr = [];
+    let colsArr = [];
+    for(let i=0; i< NUMBER_OF_ROW;i++){
+      colsArr = [];
+      for(let j=0; j<NUMBER_OF_COL;j++){
+        colsArr.push(this.renderSquare(j+i*NUMBER_OF_COL));
+      }
+      boardArr.push(<div className="board-row">{colsArr}</div>);
+    }
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {boardArr}
       </div>
     );
   }
