@@ -5,6 +5,7 @@ import Board from './components/board';
 import GameInfo from './components/gameInfo';
 import Step from './components/step';
 import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
+import {NUMBER_OF_COL, NUMBER_OF_ROW} from './constants';
   class Game extends React.Component {
     constructor(props){
       super(props);
@@ -13,15 +14,20 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
           squares: Array(9).fill(null),
         }],
         stepNumber: 0,
-        xIsNext: true
+        xIsNext: true,
+        isDraw: false
       }
   }
   handleClick(i) {
     const history = this.state.history;
+    
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares).winner || squares[i]) {
       return;
+    }
+    if(history.length >= NUMBER_OF_COL*NUMBER_OF_ROW && calculateWinner(squares).winner === null){
+      this.setState({isDraw:true});
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
@@ -36,6 +42,7 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
     render() {
       const history = this.state.history;
       const current = history[this.state.stepNumber]; 
+
       const winnerResult = calculateWinner(current.squares);
       let winner, winnerLine;
       if(winnerResult !== null){
@@ -46,7 +53,11 @@ import {calculateWinner, convertIndexToCoordinate} from './helpers/helpers';
       let status;
       if (winner) {
         status = 'Winner: ' + winner;
-      } else {
+      } 
+      else if(this.state.isDraw) {
+        status = 'Draw';
+      }
+      else {
         status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
       return (
